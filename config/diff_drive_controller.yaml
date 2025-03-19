@@ -1,0 +1,27 @@
+controller_manager:
+  ros_parameters:
+    update_rate: 100
+    use_sim_time: true
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    diff_drive_base_controller:
+      type: diff_drive_controller/DiffDriveController
+
+diff_drive_base_controller:
+  ros_parameters:
+    left_wheel_names: ["body_to_back_left_wheel"]
+    right_wheel_names: ["body_to_back_right_wheel"]
+
+    wheel_separation: 0.5
+    wheels_per_side: 1
+    wheel_radius: 0.1
+
+    wheel_separation_multiplier: 1.0
+    left_wheel_radius_multiplier: 1.0
+    right_wheel_radius_multiplier: 1.0
+
+    publish_rate: 50.0
+    odom_frame_id: odom
+    base_frame_id: body
