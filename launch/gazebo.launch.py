@@ -15,8 +15,9 @@ def generate_launch_description():
     gazebo_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             PathJoinSubstitution([FindPackageShare('gazebo_ros'),
-                'launch','gazebo.launch.py'])]),
-        # launch_arguments={'world': PathJoinSubstitution([FindPackageShare('wheeled_robot'), 'world', 'yosemite.world'])}.items()
+                'launch','gazebo.launch.py'])
+        ]),
+        launch_arguments={'world': PathJoinSubstitution([FindPackageShare('wheeled_robot'), 'config', 'walls.world']),'use_sim_time': 'true'}.items()
     )
 
     robot_description = Command([
@@ -60,11 +61,11 @@ def generate_launch_description():
         output='screen'
     )
 
-    run_plotjuggler = ExecuteProcess(
-            cmd=['ros2', 'run', 'plotjuggler', 'plotjuggler'],
-            output='screen',
-            shell=True  
-    )
+    #run_plotjuggler = ExecuteProcess(
+    #        cmd=['ros2', 'run', 'plotjuggler', 'plotjuggler'],
+    #        output='screen',
+    #        shell=True  
+    #)
    
     return LaunchDescription([
         gazebo_launch,
@@ -73,5 +74,5 @@ def generate_launch_description():
         joint_state_publisher_node, 
         load_joint_state_broadcaster,
         load_diff_drive_base_controller,
-        run_plotjuggler
+        #run_plotjuggler
     ])

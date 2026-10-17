@@ -9,7 +9,6 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-<!--        <mesh filename="file://$(find wheeled_robot)/meshes/body.STL" scale="1 1 1"/>-->
         <box size="1.1 0.5 0.1"/>
       </geometry>
       <material name="red">
@@ -17,24 +16,19 @@
       </material>
     </visual>
   </link>
-<!--
-  <link name="window">
-    <inertial>
-      <mass value="1"/>
-      <inertia ixx=".1" ixy="0" ixz="0" iyy=".1" iyz="0" izz=".1" />
-    </inertial>
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find wheeled_robot)/meshes/window.STL" scale="1 1 1"/>
-        <box size="0.1 0.1 0.1"/>
-      </geometry>
-      <material name="red">
-        <color rgba="1 0 0 1"/> 
-      </material>
-    </visual>
+
+  <link name="base_link">
   </link>
--->
+
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="base_footprint"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="base_footprint">
+  </link>
+
   <!-- Front Left -->
   <link name="front_left_wheel">
     <inertial>
@@ -50,7 +44,6 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-<!--        <mesh filename="file://$(find wheeled_robot)/meshes/wheel.STL" scale="1 1 1"/>-->
         <cylinder radius="0.2" length=".08"/>
       </geometry>
       <material name="black">
@@ -73,7 +66,6 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-<!--        <mesh filename="file://$(find wheeled_robot)/meshes/wheel.STL" scale="1 1 1"/>-->
         <cylinder radius="0.2" length=".08"/>
       </geometry>
       <material name="black">
@@ -96,7 +88,6 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-<!--        <mesh filename="file://$(find wheeled_robot)/meshes/wheel.STL" scale="1 1 1"/>-->
         <cylinder radius="0.2" length=".08"/>
       </geometry>
       <material name="black">
@@ -119,7 +110,6 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-<!--        <mesh filename="file://$(find wheeled_robot)/meshes/wheel.STL" scale="1 1 1"/>-->
         <cylinder radius="0.2" length=".08"/>
       </geometry>
       <material name="black">
@@ -127,13 +117,20 @@
       </material>
     </visual>
   </link>
-<!--
-  <joint name="body_to_window" type="fixed">
-    <origin xyz="0 0 0"/>
+
+  <link name="lidar_link">
+  </link>
+
+  <joint name="body_to_lidar_link" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 ${pi/2}"/>
     <parent link="body"/>
-    <child link="window"/>
+    <child link="lidar_link"/>
   </joint>
--->
+
+  <plugin name="lidar" filename="libgazebo_ros_ray_sensor.so">
+    <output_type>sensor_msgs/LaserScan</output_type>
+  </plugin>
+
   <joint name="body_to_front_left_wheel" type="continuous">
     <origin xyz="0.5 0.35 -0.055848" rpy="${-pi/2} 0 0"/>
     <parent link="body"/>
@@ -213,283 +210,4 @@
   <gazebo reference="back_right_wheel">
     <material>Gazebo/Black</material>
   </gazebo>
-<!--
- TESLA BOT
-  <joint name="body_to_bot_origin" type="fixed">
-    <origin xyz="0 0 1.6" rpy="0 0 ${-pi/2}" />
-    <parent link="body"/>
-    <child link="bot_origin"/>
-  </joint>
-
-  <link name="bot_origin"/>
-
-  <joint name="bot_origin_to_head" type="fixed">
-    <origin xyz="0 0 0" />
-    <parent link="bot_origin"/>
-    <child link="head"/>
-  </joint>
-
-  <link name="head">
-    <inertial>
-      <mass value="1"/>
-      <inertia ixx=".1" ixy="0" ixz="0" iyy=".1" iyz="0" izz=".1" />
-    </inertial>
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find wheeled_robot)/meshes/head.STL" scale="1 1 1"/>
-        <sphere radius="0.2"/>
-      </geometry>
-      <material name="black">
-        <color rgba="0 0 0 1"/>  Black color 
-      </material>
-    </visual>
-  </link>
-
-
-  <link name="torso">
-    <inertial>
-      <mass value="1"/>
-      <inertia ixx=".1" ixy="0" ixz="0" iyy=".1" iyz="0" izz=".1" />
-    </inertial>
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find wheeled_robot)/meshes/torso.STL" scale="1 1 1"/>
-        <cylinder radius="0.1" length="0.05"/>
-      </geometry>
-      <material name="gray">
-        <color rgba=".2 .2 .2 1" />
-      </material>
-    </visual>
-  </link>
-
-  <joint name="head_to_torso" type="fixed">
-    <origin xyz="0 0 0" />
-    <parent link="head"/>
-    <child link="torso"/>
-  </joint>
-
-  <link name="shoulder_right">
-    <inertial>
-      <mass value="1"/>
-      <inertia ixx=".1" ixy="0" ixz="0" iyy=".1" iyz="0" izz=".1" />
-    </inertial>
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find wheeled_robot)/meshes/shoulder.STL" scale="1 1 1"/>
-        <cylinder radius="0.1" length="0.05"/>
-      </geometry>
-      <material name="gray">
-        <color rgba=".2 .2 .2 1" />
-      </material>
-    </visual>
-  </link>
-
-  <joint name="torso_to_shoulder_right" type="fixed">
-    <origin xyz="0.206 0 -0.0635" rpy="-${pi/2} 0 0"/>
-    <parent link="torso"/>
-    <child link="shoulder_right"/>
-     <axis rpy="0 0 0" xyz="0 0 1"/>  
-    <limit lower="-${pi}" upper="${pi}" effort="100" velocity="20"/>
-  </joint>
-
-  <link name="shoulder_left">
-    <inertial>
-      <mass value="1"/>
-      <inertia ixx=".1" ixy="0" ixz="0" iyy=".1" iyz="0" izz=".1" />
-    </inertial>
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find wheeled_robot)/meshes/shoulder.STL" scale="1 1 1"/>
-        <cylinder radius="0.1" length="0.05"/>
-      </geometry>
-      <material name="gray">
-        <color rgba=".2 .2 .2 1" />
-      </material>
-    </visual>
-  </link>
-
-  <joint name="torso_to_shoulder_left" type="fixed">
-    <origin xyz="-0.206 0 -0.0635" rpy="${pi/2} 0 ${pi}"/>
-    <parent link="torso"/>
-    <child link="shoulder_left"/>
-     <axis rpy="0 0 0" xyz="0 0 1"/>  
-    <limit lower="-${pi}" upper="${pi}" effort="100" velocity="20"/>
-  </joint>
-
-  <link name="arm_upper_right">
-    <inertial>
-      <mass value="1"/>
-      <inertia ixx=".1" ixy="0" ixz="0" iyy=".1" iyz="0" izz=".1" />
-    </inertial>
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find wheeled_robot)/meshes/arm_upper.STL" scale="1 1 1"/>
-        <cylinder radius="0.1" length="0.05"/>
-      </geometry>
-      <material name="gray">
-        <color rgba=".2 .2 .2 1" />
-      </material>
-    </visual>
-  </link>
-
-
-  <joint name="shoulder_to_arm_upper_right" type="fixed">
-    <origin xyz="0 0 0" rpy="0 0 ${3*pi/4}"/>
-    <parent link="shoulder_right"/>
-    <child link="arm_upper_right"/>
-     <axis rpy="0 0 0" xyz="0 0 1"/>  
-    <limit lower="-${pi}" upper="${pi}" effort="100" velocity="20"/>
-  </joint>
-
-
-  <link name="arm_upper_left">
-    <inertial>
-      <mass value="1"/>
-      <inertia ixx=".1" ixy="0" ixz="0" iyy=".1" iyz="0" izz=".1" />
-    </inertial>
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find wheeled_robot)/meshes/arm_upper.STL" scale="1 1 1"/>
-        <cylinder radius="0.1" length="0.05"/>
-      </geometry>
-      <material name="gray">
-        <color rgba=".2 .2 .2 1" />
-      </material>
-    </visual>
-  </link>
-
-  <joint name="shoulder_to_arm_upper_left" type="fixed">
-    <origin xyz="0 0 0" rpy="0 0 ${pi/4}"/>
-    <parent link="shoulder_left"/>
-    <child link="arm_upper_left"/>
-     <axis rpy="0 0 0" xyz="0 0 1"/>  
-    <limit lower="-${pi}" upper="${pi}" effort="100" velocity="20"/>
-  </joint> 
-
-  <link name="arm_lower_right">
-    <inertial>
-      <mass value="1"/>
-      <inertia ixx=".1" ixy="0" ixz="0" iyy=".1" iyz="0" izz=".1" />
-    </inertial>
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find wheeled_robot)/meshes/arm_lower.STL" scale="1 1 1"/>
-        <cylinder radius="0.1" length="0.05"/>
-      </geometry>
-      <material name="gray">
-        <color rgba=".2 .2 .2 1" />
-      </material>
-    </visual>
-  </link>
-
-  <joint name="arm_upper_right_to_temp" type="fixed">
-    <origin xyz="0 -.358 0" rpy="0 -${pi/2} 0"/>
-    <parent link="arm_upper_right"/>
-    <child link="temp_right"/>
-     <axis rpy="0 0 0" xyz="0 0 1"/>  
-    <limit lower="-${pi}" upper="${pi}" effort="100" velocity="20"/>
-  </joint> 
-
-  <link name ="temp_right"/>
-  <joint name="temp_right_to_lower" type="fixed">
-    <origin xyz="0 0 0" rpy="0 0 ${pi/2}"/>
-    <parent link="temp_right"/>
-    <child link="arm_lower_right"/>
-  </joint> 
-
-  <link name="arm_lower_left">
-    <inertial>
-      <mass value="1"/>
-      <inertia ixx=".1" ixy="0" ixz="0" iyy=".1" iyz="0" izz=".1" />
-    </inertial>
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find wheeled_robot)/meshes/arm_lower.STL" scale="1 1 1"/>
-        <cylinder radius="0.1" length="0.05"/>
-      </geometry>
-      <material name="gray">
-        <color rgba=".2 .2 .2 1" />
-      </material>
-    </visual>
-  </link>
-
-  <joint name="arm_upper_left_to_temp" type="fixed">
-    <origin xyz="0 -.358 0" rpy="0 ${pi/2} 0"/>
-    <parent link="arm_upper_left"/>
-    <child link="temp_left"/>
-     <axis rpy="0 0 0" xyz="0 0 1"/>  
-    <limit lower="-${pi}" upper="${pi}" effort="100" velocity="20"/>
-  </joint> 
-
-  <link name ="temp_left"/>
-  <joint name="temp_left_to_lower" type="fixed">
-    <origin xyz="0 0 0" rpy="0 0 -${pi/2}"/>
-    <parent link="temp_left"/>
-    <child link="arm_lower_left"/>
-  </joint> 
-
-  <link name="hand_right">
-    <inertial>
-      <mass value="1"/>
-      <inertia ixx=".1" ixy="0" ixz="0" iyy=".1" iyz="0" izz=".1" />
-    </inertial>
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find wheeled_robot)/meshes/hand_right.STL" scale="1 1 1"/>
-        <cylinder radius="0.1" length="0.05"/>
-      </geometry>
-      <material name="gray">
-        <color rgba=".2 .2 .2 1" />
-      </material>
-    </visual>
-  </link>
-
-  <joint name="arm_lower_to_hand_right" type="fixed">
-    <origin xyz="0 -.338 0" rpy="${pi/2} -${pi} 0"/>
-    <parent link="arm_lower_right"/>
-    <child link="hand_right"/>
-  </joint> 
-
-  <link name="hand_left">
-    <inertial>
-      <mass value="1"/>
-      <inertia ixx=".1" ixy="0" ixz="0" iyy=".1" iyz="0" izz=".1" />
-    </inertial>
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find wheeled_robot)/meshes/hand_left.STL" scale="1 1 1"/>
-        <cylinder radius="0.1" length="0.05"/>
-      </geometry>
-      <material name="gray">
-        <color rgba=".2 .2 .2 1" />
-      </material>
-    </visual>
-  </link>
-
-  <joint name="arm_lower_to_hand_left" type="fixed">
-    <origin xyz="0 -.338 0" rpy="${pi/2} 0 0"/>
-    <parent link="arm_lower_left"/>
-    <child link="hand_left"/>
-  </joint> 
-
-  <gazebo reference="head">
-    <material>Gazebo/Black</material>
-  </gazebo>
-
-  <gazebo reference="torso">
-    <material>Gazebo/White</material>
-  </gazebo>
- END - TESLA BOT
--->
-
 </robot>

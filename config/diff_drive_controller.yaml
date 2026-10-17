@@ -15,7 +15,7 @@ diff_drive_base_controller:
     right_wheel_names: ["body_to_back_right_wheel"]
 
     wheel_separation: 1.146
-    wheels_per_side: 1  
+    wheels_per_side: 1
     wheel_radius: 0.4175
 
     wheel_separation_multiplier: 1.0

@@ -21,7 +21,7 @@ private:
     {
         geometry_msgs::msg::TwistStamped command;
         command.header.stamp = this->now();
-        command.twist.linear.x = 0.1;
+        command.twist.linear.x = 1.0;
         command.twist.angular.z = 0.1;
         publisher_->publish(command);
     }
